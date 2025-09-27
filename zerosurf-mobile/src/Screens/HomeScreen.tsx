@@ -14,6 +14,7 @@ import { SvgXml } from 'react-native-svg';
 
 import { Footer } from '../Components/Footer';
 import { icons } from '../Components/illustrations';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export type HomeScreenProps = {
   navigation: any;
@@ -22,13 +23,52 @@ export type HomeScreenProps = {
 export const HomeScreen: FunctionComponent<HomeScreenProps> = ({
   navigation,
 }) => {
-  const [anonAadhaarStatus, , , useTestAadhaar] = useAnonAadhaar();
+  const [anonAadhaarStatus, anonAadhaarProof, , useTestAadhaar] = useAnonAadhaar();
+
+  // function to check what's in local storage
+  const checkLocalStorage = async () => {
+    try {
+      const keys = await AsyncStorage.getAllKeys();
+      console.log('HomeScreen - AsyncStorage keys:', JSON.stringify(keys, null, 2));
+      
+      // check common anon-aadhaar keys
+      const anonKeys = keys.filter(key => key.includes('anon') || key.includes('proof') || key.includes('aadhaar'));
+      console.log('HomeScreen - Anon-aadhaar related keys:', JSON.stringify(anonKeys, null, 2));
+      
+      for (const key of anonKeys) {
+        const value = await AsyncStorage.getItem(key);
+        console.log(`HomeScreen - AsyncStorage[${key}]:`, JSON.stringify(value, null, 2));
+      }
+      
+      // also check all keys that might be related
+      const storageData: any = {};
+      for (const key of keys) {
+        storageData[key] = await AsyncStorage.getItem(key);
+      }
+      console.log('HomeScreen - Complete AsyncStorage contents:', JSON.stringify(storageData, null, 2));
+    } catch (error) {
+      console.error('HomeScreen - Error checking AsyncStorage:', error);
+    }
+  };
 
   useEffect(() => {
+    console.log('HomeScreen - useAnonAadhaar data:', JSON.stringify({
+      status: anonAadhaarStatus?.status,
+      hasProof: !!anonAadhaarProof,
+      proofType: typeof anonAadhaarProof,
+      proofKeys: anonAadhaarProof ? Object.keys(anonAadhaarProof) : 'no proof',
+      fullStatus: anonAadhaarStatus,
+      fullProof: anonAadhaarProof,
+    }, null, 2));
+    
+    // check local storage
+    checkLocalStorage();
+    
     if (anonAadhaarStatus.status === 'logged-in') {
-      console.log(anonAadhaarStatus.anonAadhaarProof);
+      console.log('HomeScreen - User is verified and logged in');
+      console.log('HomeScreen - Proof data available:', JSON.stringify(anonAadhaarProof, null, 2));
     }
-  }, [anonAadhaarStatus]);
+  }, [anonAadhaarStatus, anonAadhaarProof]);
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -71,11 +111,24 @@ export const HomeScreen: FunctionComponent<HomeScreenProps> = ({
         {anonAadhaarStatus.status === 'logged-in' && (
           <TouchableOpacity
             style={styles.proofSection}
-            onPress={() =>
+            onPress={() => {
+              // get the actual proof data from status object
+              const actualProofData = (anonAadhaarStatus as any)?.anonAadhaarProof?.anonAadhaarProof;
+              
+              console.log('HomeScreen - Navigating to Proof screen with data:', JSON.stringify({
+                hasProof: !!anonAadhaarProof,
+                proofData: anonAadhaarProof,
+                proofType: typeof anonAadhaarProof,
+                proofKeys: anonAadhaarProof ? Object.keys(anonAadhaarProof) : 'no proof',
+                actualProofData: actualProofData,
+                actualProofType: typeof actualProofData,
+                actualProofKeys: actualProofData ? Object.keys(actualProofData) : 'no actual proof'
+              }, null, 2));
+              
               navigation.navigate('Proof', {
-                anonAadhaarProof: anonAadhaarStatus.anonAadhaarProof,
-              })
-            }
+                anonAadhaarProof: actualProofData,
+              });
+            }}
           >
             <View style={styles.aaLogoContainer}>
               <View style={styles.aaLogo}>

@@ -104,13 +104,43 @@ export const ProofScreen: FunctionComponent<ProofScreenProps> = ({
   route,
   navigation,
 }) => {
-  const { anonAadhaarProof } = route.params;
-  const proof: AnonAadhaarProof = anonAadhaarProof.anonAadhaarProof;
+  console.log('ProofScreen - Component mounted with route params:', JSON.stringify({
+    hasRoute: !!route,
+    hasParams: !!route?.params,
+    routeParams: route?.params,
+    paramsKeys: route?.params ? Object.keys(route.params) : 'no params'
+  }, null, 2));
+  
+  const { anonAadhaarProof } = route.params || {};
+  const proof: AnonAadhaarProof | null = anonAadhaarProof || null;
+  
+  console.log('ProofScreen - Proof data extracted:', JSON.stringify({
+    hasAnonAadhaarProof: !!anonAadhaarProof,
+    anonAadhaarProofType: typeof anonAadhaarProof,
+    anonAadhaarProofKeys: anonAadhaarProof ? Object.keys(anonAadhaarProof) : 'no proof',
+    finalProof: proof,
+    finalProofType: typeof proof,
+    finalProofKeys: proof ? Object.keys(proof) : 'no proof',
+    fullAnonAadhaarProof: anonAadhaarProof,
+  }, null, 2));
+  
   const { setProofState } = useContext(AnonAadhaarContext);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
   const copyToClipboard = () => {
-    Clipboard.setString(JSON.stringify(proof));
+    if (proof) {
+      Clipboard.setString(JSON.stringify(proof));
+    }
+  };
+
+  // helper function to safely convert to BigInt and format
+  const safeBigIntToString = (value: string): string => {
+    if (value === '0') return 'Not revealed';
+    try {
+      return bigIntsToString([BigInt(value)]);
+    } catch {
+      return value; // fallback to original value if BigInt conversion fails
+    }
   };
 
   const showToast = () => {
@@ -119,6 +149,28 @@ export const ProofScreen: FunctionComponent<ProofScreenProps> = ({
       text1: 'Proof copied to clipboard.',
     });
   };
+
+  // show loading state if no proof is available
+  if (!proof) {
+    return (
+      <SafeAreaView style={styles.safeArea}>
+        <View style={styles.headerContainer}>
+          <TouchableOpacity 
+            style={styles.backButton}
+            onPress={() => navigation.goBack()}
+          >
+            <SvgXml xml={`<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>`} color="#007AFF" />
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+          <Text style={styles.subhead}>No proof available</Text>
+          <Text style={styles.callout}>Please complete verification first</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.safeArea}>
@@ -260,9 +312,7 @@ export const ProofScreen: FunctionComponent<ProofScreenProps> = ({
                 <View style={styles.fieldToRevealContainer}>
                   <View style={styles.fieldToReveal}>
                     <Text style={styles.callout}>
-                      {proof.gender === '0'
-                        ? 'Not revealed'
-                        : bigIntsToString([BigInt(proof.gender)])}
+                      {safeBigIntToString(proof.gender)}
                     </Text>
                   </View>
                 </View>
@@ -277,9 +327,7 @@ export const ProofScreen: FunctionComponent<ProofScreenProps> = ({
                 <View style={styles.fieldToRevealContainer}>
                   <View style={styles.fieldToReveal}>
                     <Text style={styles.callout}>
-                      {proof.state === '0'
-                        ? 'Not revealed'
-                        : bigIntsToString([BigInt(proof.state)])}
+                      {safeBigIntToString(proof.state)}
                     </Text>
                   </View>
                 </View>

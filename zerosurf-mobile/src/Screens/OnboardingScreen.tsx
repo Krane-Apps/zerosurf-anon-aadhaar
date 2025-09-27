@@ -12,7 +12,6 @@ import {
 import { SvgXml } from 'react-native-svg';
 
 import * as messages from '../../assets/messages.json';
-import { CircularProgress } from '../Components/CircleProgress';
 import { ProgressBar } from '../Components/ProgressBar';
 import { icons } from '../Components/illustrations';
 
@@ -29,7 +28,7 @@ const lotties = [
   require('../../assets/lotties/5.Foster.json'),
 ];
 
-const setupTime = 60000; // 60 seconds in milliseconds
+const setupTime = 120000; // 120 seconds in milliseconds (2 minutes)
 
 export const OnboardingScreen: FunctionComponent<OnboardingScreenProps> = ({
   setupReady,
@@ -38,6 +37,16 @@ export const OnboardingScreen: FunctionComponent<OnboardingScreenProps> = ({
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [setupProgress, setSetupProgress] = useState<number>(0);
+  const [currentLoadingMessage, setCurrentLoadingMessage] = useState<string>('');
+
+  // loading messages for setup process
+  const loadingMessages = [
+    'Initializing ZeroSurf...',
+    'Downloading proof bindings...',
+    'Setting up cryptographic modules...',
+    'Preparing verification system...',
+    'Almost ready...',
+  ];
 
   useEffect(() => {
     if (setupReady) setSetupProgress(1);
@@ -55,6 +64,15 @@ export const OnboardingScreen: FunctionComponent<OnboardingScreenProps> = ({
 
     return () => clearInterval(intervalId);
   }, []);
+
+  // update loading messages based on progress
+  useEffect(() => {
+    if (!setupReady) {
+      const messageIndex = Math.floor(setupProgress * loadingMessages.length);
+      const currentIndex = Math.min(messageIndex, loadingMessages.length - 1);
+      setCurrentLoadingMessage(loadingMessages[currentIndex]);
+    }
+  }, [setupProgress, setupReady]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -75,12 +93,6 @@ export const OnboardingScreen: FunctionComponent<OnboardingScreenProps> = ({
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.content}>
         <View style={styles.scrollView}>
-          {isLoading && null}
-          {/* <Image
-            source={images[activeIndex]}
-            style={styles.topImage}
-            onLoad={onLoadEvent}
-          /> */}
           <LottieView
             source={lotties[activeIndex]}
             style={styles.topImage}
@@ -91,34 +103,54 @@ export const OnboardingScreen: FunctionComponent<OnboardingScreenProps> = ({
           <Text style={styles.heading}>
             {messages[activeIndex.toString() as keyof typeof messages].headline}
           </Text>
-          <Text style={styles.subHeading}>
-            {messages[activeIndex.toString() as keyof typeof messages].subline}
-          </Text>
+          
           <ProgressBar currentIndex={activeIndex} itemCount={5} />
-        </View>
-        <View style={styles.footer}>
-          <View style={styles.logoContainer}>
-            <CircularProgress
-              size={65}
-              strokeWidth={3}
-              progress={setupProgress}
-            />
-            <Image
-              source={require('../../assets/logo.png')}
-              style={styles.brandLogo}
-            />
+          
+          {/* loading status section */}
+          <View style={styles.loadingSection}>
+            {!setupReady && (
+              <Text style={styles.loadingMessage}>
+                {currentLoadingMessage}
+              </Text>
+            )}
+            
+            {setupReady && (
+              <Text style={styles.readyMessage}>
+                Ready to browse safely!
+              </Text>
+            )}
+            
+            {/* progress bar */}
+            <View style={styles.progressBarContainer}>
+              <View style={styles.progressBarBackground}>
+                <View 
+                  style={[
+                    styles.progressBarFill, 
+                    { width: `${setupProgress * 100}%` }
+                  ]} 
+                />
+              </View>
+              <Text style={styles.progressText}>
+                {Math.round(setupProgress * 100)}%
+              </Text>
+            </View>
           </View>
-
+        </View>
+        
+        {/* centered get started button */}
+        <View style={styles.buttonContainer}>
           {setupReady ? (
             <TouchableOpacity
               style={styles.button}
               onPress={() => navigation.navigate('Browser')}
             >
-              <SvgXml xml={icons.arrowRightLine} width="24" height="24" />
+              <Text style={styles.buttonText}>Get Started</Text>
+              <SvgXml xml={icons.arrowRightLine} width="20" height="20" style={styles.buttonIcon} />
             </TouchableOpacity>
           ) : (
             <View style={styles.buttonDisabled}>
-              <SvgXml xml={icons.arrowRightLine} width="24" height="24" />
+              <Text style={styles.buttonTextDisabled}>Get Started</Text>
+              <SvgXml xml={icons.arrowRightLine} width="20" height="20" style={styles.buttonIcon} />
             </View>
           )}
         </View>
@@ -129,74 +161,112 @@ export const OnboardingScreen: FunctionComponent<OnboardingScreenProps> = ({
 
 const screenWidth = Dimensions.get('window').width;
 const styles = StyleSheet.create({
-  brandLogo: {
-    height: 50,
-    resizeMode: 'contain',
-    width: 50,
-  },
   button: {
     backgroundColor: '#06753b',
     borderRadius: 50,
-    paddingHorizontal: 70,
+    paddingHorizontal: 30,
     paddingVertical: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 200,
   },
   buttonDisabled: {
     backgroundColor: '#51785a',
     borderRadius: 50,
-    paddingHorizontal: 70,
+    paddingHorizontal: 30,
     paddingVertical: 15,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minWidth: 200,
   },
   buttonText: {
     color: '#FFFFFF',
-    fontSize: 24,
+    fontSize: 18,
+    fontFamily: 'Outfit-Bold',
+    marginRight: 8,
+  },
+  buttonTextDisabled: {
+    color: '#CCCCCC',
+    fontSize: 18,
+    fontFamily: 'Outfit-Bold',
+    marginRight: 8,
+  },
+  buttonIcon: {
+    marginLeft: 4,
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    paddingBottom: 40,
+    paddingHorizontal: 20,
   },
   content: {
     flex: 1,
   },
-  footer: {
-    alignItems: 'center',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingBottom: 20,
-    paddingHorizontal: 20,
-    width: '100%',
-  },
   heading: {
     color: '#000000',
     fontFamily: 'Outfit-Bold',
-    fontSize: 30,
+    fontSize: 28,
     fontWeight: 'bold',
     marginTop: 20,
-    textAlign: 'left',
+    marginBottom: 20,
+    textAlign: 'center',
   },
-  logoContainer: {
+  loadingSection: {
     alignItems: 'center',
-    justifyContent: 'center',
-    position: 'relative',
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  loadingMessage: {
+    color: '#666666',
+    fontFamily: 'Outfit-Regular',
+    fontSize: 16,
+    marginTop: 20,
+    textAlign: 'center',
+  },
+  readyMessage: {
+    color: '#06753b',
+    fontFamily: 'Outfit-Bold',
+    fontSize: 18,
+    marginTop: 20,
+    textAlign: 'center',
   },
   safeArea: {
     backgroundColor: '#FFFFFF',
     flex: 1,
   },
   scrollView: {
-    flexGrow: 1,
+    flex: 1,
     justifyContent: 'center',
     padding: 20,
   },
-  shortcut: {
-    paddingHorizontal: 70,
-    paddingVertical: 15,
-  },
-  subHeading: {
-    color: '#666666',
-    fontFamily: 'Outfit-Regular',
-    fontSize: 16,
-    marginTop: 10,
-    textAlign: 'left',
-  },
   topImage: {
-    width: screenWidth - 40, // Assuming 20 padding on each side
+    width: screenWidth - 40,
     height: (screenWidth - 40) * (416 / 390),
     resizeMode: 'contain',
+  },
+  progressBarContainer: {
+    width: '100%',
+    marginTop: 30,
+    alignItems: 'center',
+  },
+  progressBarBackground: {
+    width: '80%',
+    height: 8,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
+  progressBarFill: {
+    height: '100%',
+    backgroundColor: '#06753b',
+    borderRadius: 4,
+  },
+  progressText: {
+    color: '#666666',
+    fontFamily: 'Outfit-Bold',
+    fontSize: 14,
+    marginTop: 10,
   },
 });
