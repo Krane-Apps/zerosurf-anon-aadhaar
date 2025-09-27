@@ -1,0 +1,25 @@
+{
+  "name": "zerosurf-backend",
+  "version": "1.0.0",
+  "description": "ZeroSurf content filtering backend with NSFW detection",
+  "main": "src/app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": ["content-filtering", "nsfw-detection", "age-verification", "fluence"],
+  "author": "ZeroSurf Team",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "helmet": "^7.1.0",
+    "axios": "^1.6.0",
+    "cheerio": "^1.0.0-rc.12",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

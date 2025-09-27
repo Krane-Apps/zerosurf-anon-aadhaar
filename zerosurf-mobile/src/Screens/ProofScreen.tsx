@@ -19,7 +19,6 @@ import {
 import { SvgXml } from 'react-native-svg';
 import Toast from 'react-native-toast-message';
 
-import { Footer } from '../Components/Footer';
 import { icons } from '../Components/illustrations';
 
 type ProofScreenProps = {
@@ -75,13 +74,13 @@ const ConfirmationModal = ({
                 { borderEndStartRadius: 8 },
               ]}
             >
-              <Text style={{ color: 'white' }}>Cancel</Text>
+              <Text style={{ color: '#000000' }}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={() => {
                 cleanAnonAadhaarState();
                 setProofState('deleted');
-                navigation.navigate('Home');
+                navigation.goBack();
                 setModalVisible(!modalVisible);
               }}
               style={[
@@ -124,6 +123,20 @@ export const ProofScreen: FunctionComponent<ProofScreenProps> = ({
   return (
     <SafeAreaView style={styles.safeArea}>
       <Toast />
+      
+      {/* back button */}
+      <View style={styles.headerContainer}>
+        <TouchableOpacity 
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
+          <SvgXml xml={`<svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>`} color="#007AFF" />
+          <Text style={styles.backButtonText}>Back</Text>
+        </TouchableOpacity>
+      </View>
+      
       <View style={styles.scrollView}>
         {anonAadhaarProof ? (
           <>
@@ -141,7 +154,7 @@ export const ProofScreen: FunctionComponent<ProofScreenProps> = ({
                 }}
               >
                 <Text style={styles.infoText}>Copy Proof</Text>
-                <SvgXml xml={icons.fileCopyLine} width="24" height="24" />
+                <SvgXml xml={icons.fileCopyLine} width="24" height="24" color="#000000" />
               </TouchableOpacity>
               <ConfirmationModal
                 setModalVisible={setModalVisible}
@@ -163,7 +176,7 @@ export const ProofScreen: FunctionComponent<ProofScreenProps> = ({
                 <Text style={[styles.infoText, { color: '#ED3636' }]}>
                   Delete Proof
                 </Text>
-                <SvgXml xml={icons.deleteBinLine} width="24" height="24" />
+                <SvgXml xml={icons.deleteBinLine} width="24" height="24" color="#ED3636" />
               </TouchableOpacity>
             </View>
 
@@ -292,7 +305,6 @@ export const ProofScreen: FunctionComponent<ProofScreenProps> = ({
           <Text style={styles.heading}>Oops something is missing...</Text>
         )}
       </View>
-      <Footer navigation={navigation} />
     </SafeAreaView>
   );
 };
@@ -306,7 +318,7 @@ const styles = StyleSheet.create({
   actionButton: {
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#3E3B3B',
+    backgroundColor: '#F2F2F7',
     borderRadius: 8,
     elevation: 8,
     flex: 1,
@@ -323,7 +335,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4.65,
   },
   callout: {
-    color: 'white',
+    color: '#000000',
     flexWrap: 'wrap',
     fontFamily: 'Outfit-Regular',
     fontSize: 14,
@@ -337,15 +349,15 @@ const styles = StyleSheet.create({
   },
   confirmationModalButton: {
     alignItems: 'center',
-    backgroundColor: '#484343',
-    borderColor: 'gray',
+    backgroundColor: '#F2F2F7',
+    borderColor: '#C6C6C8',
     borderTopWidth: 1,
     flex: 1,
     paddingVertical: 15,
   },
   fieldToReveal: {
     alignItems: 'center',
-    backgroundColor: '#3E3B3B',
+    backgroundColor: '#F2F2F7',
     borderRadius: 4,
     flexDirection: 'row',
     height: 'auto',
@@ -359,20 +371,20 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   fieldToRevealText: {
-    color: 'white',
+    color: '#000000',
     fontFamily: 'Outfit-Bold',
     fontSize: 18,
     fontWeight: 'bold',
     paddingVertical: 6,
   },
   footnote: {
-    color: 'white',
+    color: '#666666',
     fontFamily: 'Outfit-Light',
     fontSize: 14,
     lineHeight: 16,
   },
   heading: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontFamily: 'Outfit-Bold',
     fontSize: 30,
     fontWeight: 'bold',
@@ -388,13 +400,13 @@ const styles = StyleSheet.create({
     width: 95,
   },
   infoText: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontFamily: 'Outfit-Regular',
     fontSize: 15,
     textAlign: 'left',
   },
   modalText: {
-    color: 'white',
+    color: '#000000',
     fontFamily: 'Outfit-Regular',
     fontSize: 16,
     marginBottom: 15,
@@ -402,7 +414,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     alignItems: 'center',
-    backgroundColor: '#3E3B3B',
+    backgroundColor: '#FFFFFF',
     borderRadius: 8,
     elevation: 5,
     margin: 20,
@@ -416,16 +428,32 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
   },
   safeArea: {
-    backgroundColor: '#000000',
+    backgroundColor: '#FFFFFF',
     flex: 1,
+  },
+  headerContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    borderBottomWidth: 0.5,
+    borderBottomColor: '#C6C6C8',
+  },
+  backButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingVertical: 8,
+  },
+  backButtonText: {
+    color: '#007AFF',
+    fontSize: 16,
+    marginLeft: 4,
   },
   scrollView: {
     flex: 1,
-    justifyContent: 'center',
     padding: 20,
+    paddingTop: 10,
   },
   subhead: {
-    color: '#B3ADAE',
+    color: '#666666',
     fontFamily: 'Outfit-Regular',
     fontSize: 15,
   },

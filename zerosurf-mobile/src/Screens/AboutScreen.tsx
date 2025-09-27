@@ -77,7 +77,7 @@ export const AboutScreen: FunctionComponent<AboutProps> = ({ navigation }) => {
           >
             <Text
               style={{
-                color: 'white',
+                color: '#000000',
                 fontSize: 18,
                 marginVertical: 10,
                 fontWeight: 'bold',
@@ -123,19 +123,19 @@ export const AboutScreen: FunctionComponent<AboutProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   callout: {
-    color: 'white',
+    color: '#000000',
     fontFamily: 'Outfit-Regular',
     fontSize: 16,
     lineHeight: 15,
   },
   footnote: {
-    color: 'white',
+    color: '#666666',
     fontFamily: 'Outfit-Light',
     fontSize: 14,
     lineHeight: 16,
   },
   heading: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontFamily: 'Outfit-Bold',
     fontSize: 30,
     fontWeight: 'bold',
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#3E3B3B',
+    backgroundColor: '#F2F2F7',
     borderRadius: 8,
     elevation: 8,
     flexDirection: 'row',
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     width: 80,
   },
   infoText: {
-    color: '#FFFFFF',
+    color: '#000000',
     flex: 1,
     fontSize: 18,
     fontWeight: 'bold',
@@ -179,7 +179,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   safeArea: {
-    backgroundColor: '#000000',
+    backgroundColor: '#FFFFFF',
     flex: 1,
   },
   scrollView: {
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   title: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontFamily: 'Outfit-Bold',
     fontSize: 20,
     fontWeight: 'bold',

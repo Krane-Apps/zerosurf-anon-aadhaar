@@ -7,6 +7,7 @@ import {
   View,
   ActivityIndicator,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
@@ -140,6 +141,13 @@ export const ProveModal = ({
         <TouchableWithoutFeedback onPress={onCloseModal}>
           <View style={modalStyles.centeredView}>
             <View style={modalStyles.modalView}>
+              {/* Close button */}
+              <TouchableOpacity style={modalStyles.closeButton} onPress={onCloseModal}>
+                <SvgXml xml={`<svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M18 6L6 18M6 6L18 18" stroke="#8E8E93" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>`} />
+              </TouchableOpacity>
+              
               {(() => {
                 switch (currentScreen) {
                   case 'uploadQR':

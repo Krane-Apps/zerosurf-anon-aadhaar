@@ -112,7 +112,7 @@ export const OnboardingScreen: FunctionComponent<OnboardingScreenProps> = ({
           {setupReady ? (
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate('Home')}
+              onPress={() => navigation.navigate('Browser')}
             >
               <SvgXml xml={icons.arrowRightLine} width="24" height="24" />
             </TouchableOpacity>
@@ -162,7 +162,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   heading: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontFamily: 'Outfit-Bold',
     fontSize: 30,
     fontWeight: 'bold',
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     position: 'relative',
   },
   safeArea: {
-    backgroundColor: '#000000',
+    backgroundColor: '#FFFFFF',
     flex: 1,
   },
   scrollView: {
@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   subHeading: {
-    color: '#b8b8b8',
+    color: '#666666',
     fontFamily: 'Outfit-Regular',
     fontSize: 16,
     marginTop: 10,

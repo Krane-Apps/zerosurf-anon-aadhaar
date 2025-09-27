@@ -26,7 +26,7 @@ export const modalStyles = StyleSheet.create({
   },
   buttonGreen: {
     alignSelf: 'center',
-    backgroundColor: '#3E3B3B',
+    backgroundColor: '#06753B',
     borderRadius: 5,
     marginTop: 20,
     paddingHorizontal: 50,
@@ -51,7 +51,7 @@ export const modalStyles = StyleSheet.create({
     textAlign: 'center',
   },
   callout: {
-    color: 'white',
+    color: '#000000',
     flexWrap: 'wrap',
     fontFamily: 'Outfit-Regular',
     fontSize: 16,
@@ -65,7 +65,7 @@ export const modalStyles = StyleSheet.create({
   },
   fieldToReveal: {
     alignItems: 'center',
-    backgroundColor: '#3E3B3B',
+    backgroundColor: '#F2F2F7',
     borderRadius: 4,
     flexDirection: 'row',
     height: 'auto',
@@ -79,7 +79,7 @@ export const modalStyles = StyleSheet.create({
     width: '100%',
   },
   fieldToRevealText: {
-    color: 'white',
+    color: '#000000',
     fontFamily: 'Outfit-Bold',
     fontSize: 18,
     fontWeight: 'bold',
@@ -90,20 +90,20 @@ export const modalStyles = StyleSheet.create({
   },
   footnote: {
     alignSelf: 'flex-start',
-    color: '#B3ADAE',
+    color: '#666666',
     fontFamily: 'Outfit-Regular',
     fontSize: 14,
     lineHeight: 18,
     marginTop: 10,
   },
   header: {
-    color: 'white',
+    color: '#000000',
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'center',
   },
   headerQr: {
-    color: 'white',
+    color: '#000000',
     fontSize: 20,
     fontWeight: '700',
     textAlign: 'left',
@@ -115,10 +115,10 @@ export const modalStyles = StyleSheet.create({
   },
   modalView: {
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#FFFFFF',
     bottom: 0,
     elevation: 5,
-    height: '70%',
+    height: '85%',
     padding: 24,
     paddingBottom: 40,
     paddingTop: 40,
@@ -131,6 +131,8 @@ export const modalStyles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     width: '100%',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   proveButton: {
     alignItems: 'center',
@@ -150,7 +152,7 @@ export const modalStyles = StyleSheet.create({
   scanQrButton: {
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#3E3B3B',
+    backgroundColor: '#F2F2F7',
     borderRadius: 8,
     elevation: 8,
     flexDirection: 'row',
@@ -176,7 +178,7 @@ export const modalStyles = StyleSheet.create({
     width: 95,
   },
   scanQrText: {
-    color: '#FFFFFF',
+    color: '#000000',
     flex: 1,
     fontSize: 18,
     fontWeight: 'bold',
@@ -184,7 +186,7 @@ export const modalStyles = StyleSheet.create({
     textAlign: 'left',
   },
   subhead: {
-    color: '#B3ADAE',
+    color: '#666666',
     fontFamily: 'Outfit-Regular',
     fontSize: 15,
   },
@@ -201,5 +203,17 @@ export const modalStyles = StyleSheet.create({
     height: 88,
     justifyContent: 'center',
     width: 88,
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 16,
+    right: 16,
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    backgroundColor: '#F2F2F7',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1,
   },
 });

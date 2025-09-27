@@ -33,10 +33,10 @@ export const HomeScreen: FunctionComponent<HomeScreenProps> = ({
   return (
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.scrollView}>
-        <Text style={styles.heading}>Hey Anon,</Text>
+        <Text style={styles.heading}>Hey Surfer,</Text>
         <View style={styles.greenSection}>
           <Image
-            source={require('../../assets/home.png')}
+            source={require('../../assets/logo.png')}
             style={styles.topImage}
           />
 
@@ -96,6 +96,24 @@ export const HomeScreen: FunctionComponent<HomeScreenProps> = ({
             </View>
           </TouchableOpacity>
         )}
+
+        {/* browse web button */}
+        <TouchableOpacity
+          style={styles.browserSection}
+          onPress={() => navigation.navigate('Browser')}
+        >
+          <View style={styles.browserIconContainer}>
+            <View style={styles.browserIcon}>
+              <SvgXml xml={icons.globeLine} width="40" height="40" />
+            </View>
+          </View>
+          <Text style={[styles.proofSectionText, { marginLeft: 10 }]}>
+            Browse Web Safely
+          </Text>
+          <View style={styles.arrowContainer}>
+            <SvgXml xml={icons.arrowRightLine} width="40" height="40" />
+          </View>
+        </TouchableOpacity>
       </View>
       <Footer navigation={navigation} />
     </SafeAreaView>
@@ -111,7 +129,7 @@ const styles = StyleSheet.create({
   },
   aaLogoContainer: {
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#000000',
     borderRadius: 8,
     height: 40,
     justifyContent: 'center',
@@ -140,7 +158,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   heading: {
-    color: '#FFFFFF',
+    color: '#000000',
     fontFamily: 'Outfit-Bold',
     fontSize: 30,
     fontWeight: 'bold',
@@ -150,7 +168,7 @@ const styles = StyleSheet.create({
   proofSection: {
     alignItems: 'center',
     alignSelf: 'center',
-    backgroundColor: '#3E3B3B',
+    backgroundColor: '#F2F2F7',
     borderRadius: 8,
     elevation: 8,
     flexDirection: 'row',
@@ -168,7 +186,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   proofSectionText: {
-    color: 'white',
+    color: '#000000',
     fontFamily: 'Outfit-Bold',
     fontSize: 20,
     textAlign: 'left',
@@ -180,7 +198,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   safeArea: {
-    backgroundColor: '#000000',
+    backgroundColor: '#FFFFFF',
     flex: 1,
   },
   scrollView: {
@@ -189,7 +207,7 @@ const styles = StyleSheet.create({
   },
   tag: {
     alignItems: 'center',
-    backgroundColor: 'black',
+    backgroundColor: '#000000',
     borderRadius: 8,
     justifyContent: 'center',
     padding: 8,
@@ -210,5 +228,32 @@ const styles = StyleSheet.create({
     height: '50%',
     resizeMode: 'contain',
     width: '100%',
+  },
+  browserSection: {
+    alignItems: 'center',
+    backgroundColor: '#F2F2F7',
+    borderRadius: 15,
+    flexDirection: 'row',
+    marginTop: 20,
+    paddingHorizontal: 20,
+    paddingVertical: 15,
+    position: 'relative',
+  },
+  browserIconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  browserIcon: {
+    alignItems: 'center',
+    backgroundColor: '#007AFF',
+    borderRadius: 25,
+    height: 50,
+    justifyContent: 'center',
+    width: 50,
+  },
+  arrowContainer: {
+    position: 'absolute',
+    right: 10,
+    top: '50%',
   },
 });

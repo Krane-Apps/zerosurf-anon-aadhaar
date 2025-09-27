@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 
 import { AboutScreen } from './Screens/AboutScreen';
 import BenchmarkView from './Screens/BenchmarkScreen';
+import { BrowserScreen } from './Screens/BrowserScreen';
 import { HomeScreen } from './Screens/HomeScreen';
 import { OnboardingScreen } from './Screens/OnboardingScreen';
 import { ProofScreen } from './Screens/ProofScreen';
@@ -44,6 +45,11 @@ export default function App() {
           <Stack.Screen
             name="About"
             component={AboutScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Browser"
+            component={BrowserScreen}
             options={{ headerShown: false }}
           />
         </Stack.Navigator>

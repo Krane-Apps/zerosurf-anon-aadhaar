@@ -17,21 +17,21 @@ export const Footer: FunctionComponent<FooterProps> = ({ navigation }) => {
     <View style={styles.footerContainer}>
       <TouchableOpacity
         style={styles.footerButton}
-        onPress={() => navigation.navigate('Home')}
+        onPress={() => navigation.navigate('Browser')}
       >
         <View style={styles.iconWrapper}>
           <SvgXml
-            xml={route.name === 'Home' ? icons.home5LineGreen : icons.home5Line}
+            xml={route.name === 'Browser' ? icons.home5LineGreen : icons.home5Line}
             width="30"
             height="30"
           />
           <Text
             style={[
               styles.footerText,
-              route.name === 'Home' ? { color: '#06753B' } : null,
+              route.name === 'Browser' ? { color: '#06753B' } : null,
             ]}
           >
-            Home
+            Browser
           </Text>
         </View>
       </TouchableOpacity>
