@@ -135,7 +135,7 @@ export default function BenchmarkView({}) {
     <View style={styles.container}>
       {errorToastMessage && <Toast message={errorToastMessage} />}
 
-      <Text style={styles.title}>Anon Aadhaar Mobile</Text>
+      <Text style={styles.title}>ZeroSurf Mobile</Text>
       <View style={styles.statusRow}>
         <View
           style={[

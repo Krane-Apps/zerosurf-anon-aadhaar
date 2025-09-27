@@ -379,8 +379,8 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = expo.modules.anonaadhaar.example;
-				PRODUCT_NAME = anonaadhaarpackageexample;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zerosurf.mobile";
+				PRODUCT_NAME = "ZeroSurfMobile";
 				SWIFT_OBJC_BRIDGING_HEADER = "AnonAadhaar/AnonAadhaar-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -410,8 +410,8 @@
 					"-lc++",
 				);
 				OTHER_SWIFT_FLAGS = "$(inherited) -D EXPO_CONFIGURATION_RELEASE";
-				PRODUCT_BUNDLE_IDENTIFIER = expo.modules.anonaadhaar.example;
-				PRODUCT_NAME = anonaadhaarpackageexample;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.zerosurf.mobile";
+				PRODUCT_NAME = "ZeroSurfMobile";
 				SWIFT_OBJC_BRIDGING_HEADER = "AnonAadhaar/AnonAadhaar-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
