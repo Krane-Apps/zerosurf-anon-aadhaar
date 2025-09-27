@@ -7,7 +7,7 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 ## Step 1. Download bindings
 
 Download the Anon Aadhaar native mobile bindings from the repository: [mopro-anon-aahdaar](https://github.com/vivianjeng/mopro-anon-aadhaar).
-From the root directory (**not the example directory**), run
+From the root directory (**not the zerosurf-mobile directory**), run
 
 ```sh
 ./download_bindings.sh

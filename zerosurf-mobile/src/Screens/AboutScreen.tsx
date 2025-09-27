@@ -38,7 +38,7 @@ export const AboutScreen: FunctionComponent<AboutProps> = ({ navigation }) => {
           <View style={[styles.infoIcon, { backgroundColor: '#06753B' }]}>
             <SvgXml xml={icons.bookMarkLine} width="40" height="40" />
           </View>
-          <Text style={styles.infoText}>Anon Aadhaar Documentation</Text>
+          <Text style={styles.infoText}>Documentation</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -99,12 +99,10 @@ export const AboutScreen: FunctionComponent<AboutProps> = ({ navigation }) => {
         <View style={{ gap: 5 }}>
           <Text style={styles.title}>About</Text>
           <Text style={styles.footnote}>
-            This mobile application has been developed by the Anon Aadhaar team,
-            aiming to demonstrate the capabilities of the protocol within a
-            mobile environment. We have incorporated RapidSnark and witnescalc
-            as the primary proving system to enhance the user experience. If you
-            are interested in learning more, we invite you to join our Telegram
-            group.
+            This mobile application demonstrates zero-knowledge proof capabilities
+            for identity verification within a mobile environment. We have
+            incorporated RapidSnark and witnescalc as the primary proving system
+            to enhance the user experience.
           </Text>
 
           <View style={{ marginTop: 5 }}>

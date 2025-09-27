@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'anon-aadhaar-package-example'
+rootProject.name = 'zerosurf-mobile'
 
 dependencyResolutionManagement {
   versionCatalogs {

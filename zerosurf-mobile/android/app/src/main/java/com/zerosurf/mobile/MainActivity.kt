@@ -1,4 +1,4 @@
-package expo.modules.anonaadhaar.example
+package com.zerosurf.mobile
 
 import android.os.Build
 import android.os.Bundle
