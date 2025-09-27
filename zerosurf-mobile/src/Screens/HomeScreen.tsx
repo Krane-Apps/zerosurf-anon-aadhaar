@@ -104,7 +104,7 @@ export const HomeScreen: FunctionComponent<HomeScreenProps> = ({
               signal="0xa527e0029e720D5f31c8798DF7b107Fad54f40E6"
               nullifierSeed={1234}
               fieldsToRevealArray={['revealAgeAbove18', 'revealState']}
-              useTestAadhaar={useTestAadhaar}
+              useTestAadhaar={false}
             />
           </View>
         </View>

@@ -29,14 +29,11 @@ export class DeeplinkService {
 
   // Parse and handle deeplink URL
   private static handleDeeplink(url: string) {
-    console.log('DeeplinkService received URL:', url);
-    
     try {
       const urlObj = new URL(url);
       
       // Check if it's a zerosurf scheme
       if (urlObj.protocol !== 'zerosurf:') {
-        console.log('Invalid scheme, ignoring:', urlObj.protocol);
         return;
       }
 
@@ -52,10 +49,10 @@ export class DeeplinkService {
         }
       });
 
-      console.log('Parsed deeplink:', { path, params, listenerCount: this.listeners.length });
-
       // Notify listeners
-      this.listeners.forEach(listener => listener(params));
+      this.listeners.forEach((listener) => {
+        listener(params);
+      });
       
     } catch (error) {
       console.error('Error parsing deeplink:', error);
@@ -86,13 +83,11 @@ export class DeeplinkService {
       }
       
       const finalUrl = url.toString();
-      console.log('DeeplinkService returning to website:', { finalUrl, verified, proofHash });
       
       // Open the website URL
       const canOpen = await Linking.canOpenURL(finalUrl);
       if (canOpen) {
         await Linking.openURL(finalUrl);
-        console.log('Successfully opened return URL');
       } else {
         console.error('Cannot open return URL:', finalUrl);
       }

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
+  Text,
   StyleSheet,
   StatusBar,
   SafeAreaView,
@@ -46,35 +47,23 @@ export const BrowserScreen = ({ navigation, route }: { navigation: any, route?: 
   
   const isVerified = anonAadhaarStatus.status === 'logged-in';
   
-  // log proof data whenever it changes
-  useEffect(() => {
-    console.log('BrowserScreen - useAnonAadhaar data:', JSON.stringify({
-      status: anonAadhaarStatus?.status,
-      isVerified,
-      hasProof: !!anonAadhaarProof,
-      proofType: typeof anonAadhaarProof,
-      proofKeys: anonAadhaarProof ? Object.keys(anonAadhaarProof) : 'no proof',
-      fullStatus: anonAadhaarStatus,
-      fullProof: anonAadhaarProof,
-    }, null, 2));
-  }, [anonAadhaarStatus, anonAadhaarProof, isVerified]);
-  
   // Handle deeplink verification requests from route params
   useEffect(() => {
     const params = route?.params?.deeplinkParams;
+    
     if (params) {
-      console.log('deeplink flow:', { params, isVerified });
       setDeeplinkParams(params);
       
-      // if user is already verified, immediately return to website
+      // if user is already verified, navigate to the original URL in browser
       if (isVerified && params.returnUrl) {
-        const proofHash = 'verified';
-        console.log('auto-returning verified user to website:', params.returnUrl);
-        DeeplinkService.returnToWebsite(params.returnUrl, true, proofHash);
+        setCurrentUrl(params.returnUrl);
+        // Don't return to website, stay in ZeroSurf browser
       } else {
-        // if not verified, show prove modal directly for deeplink flows
-        console.log('opening prove modal directly for unverified deeplink user');
-        setShowProveModal(true);
+        // if not verified, show content blocked message and prove modal
+        if (params.returnUrl || params.challenge) {
+          setIsContentBlocked(true);
+          setShowProveModal(true);
+        }
       }
     }
   }, [route?.params?.deeplinkParams, isVerified, anonAadhaarStatus]);
@@ -84,7 +73,6 @@ export const BrowserScreen = ({ navigation, route }: { navigation: any, route?: 
     
     // check if this is a blocked site for unverified users
     if (!isVerified && isBlockedDomain(url)) {
-      console.log('content blocked - opening prove modal directly');
       setIsContentBlocked(true);
       setShowProveModal(true);
       // prevent updating current url to blocked site
@@ -102,7 +90,6 @@ export const BrowserScreen = ({ navigation, route }: { navigation: any, route?: 
     
     // block sites for unverified users
     if (!isVerified && isBlockedDomain(url)) {
-      console.log('content blocked - opening prove modal directly');
       setIsContentBlocked(true);
       setShowProveModal(true);
       return false;
@@ -135,7 +122,6 @@ export const BrowserScreen = ({ navigation, route }: { navigation: any, route?: 
     
     // check if this is a blocked site for unverified users
     if (!isVerified && isBlockedDomain(formattedUrl)) {
-      console.log('content blocked - opening prove modal directly');
       setIsContentBlocked(true);
       setShowProveModal(true);
       return;
@@ -153,26 +139,9 @@ export const BrowserScreen = ({ navigation, route }: { navigation: any, route?: 
   };
 
   const handleVerificationBadgePress = () => {
-    console.log('BrowserScreen - Verification badge pressed:', JSON.stringify({
-      isVerified,
-      status: anonAadhaarStatus?.status,
-      hasProof: !!anonAadhaarProof,
-      proofData: anonAadhaarProof,
-    }, null, 2));
-    
     if (isVerified) {
       // get the actual proof data from status object
       const actualProofData = (anonAadhaarStatus as any)?.anonAadhaarProof?.anonAadhaarProof;
-      
-      console.log('BrowserScreen - Navigating to proof screen with data:', JSON.stringify({
-        hasProof: !!anonAadhaarProof,
-        proofData: anonAadhaarProof,
-        proofType: typeof anonAadhaarProof,
-        proofKeys: anonAadhaarProof ? Object.keys(anonAadhaarProof) : 'no proof',
-        actualProofData: actualProofData,
-        actualProofType: typeof actualProofData,
-        actualProofKeys: actualProofData ? Object.keys(actualProofData) : 'no actual proof'
-      }, null, 2));
       
       navigation.navigate('Proof', {
         anonAadhaarProof: actualProofData,
@@ -180,7 +149,6 @@ export const BrowserScreen = ({ navigation, route }: { navigation: any, route?: 
     } else {
       // if not verified, show prove modal directly for manual verification
       // clear any existing deeplink params since this is manual verification
-      console.log('red shield pressed - opening prove modal directly');
       setDeeplinkParams(null);
       setShowProveModal(true);
     }
@@ -214,53 +182,62 @@ export const BrowserScreen = ({ navigation, route }: { navigation: any, route?: 
           startInLoadingState={true}
           renderLoading={() => <View style={styles.loadingPlaceholder} />}
         />
+        
+        {/* Content Blocked Overlay */}
+        {isContentBlocked && (
+          <View style={styles.contentBlockedOverlay}>
+            <View style={styles.contentBlockedContainer}>
+              <Text style={styles.contentBlockedTitle}>Content Blocked</Text>
+              <Text style={styles.contentBlockedMessage}>
+                {deeplinkParams?.returnUrl 
+                  ? `This website requires age verification to access.\n\nOriginal URL: ${deeplinkParams.returnUrl}`
+                  : 'This content requires age verification to access.'
+                }
+              </Text>
+              <Text style={styles.contentBlockedSubtext}>
+                Verify your age with Aadhaar to continue browsing.
+              </Text>
+            </View>
+          </View>
+        )}
       </View>
 
 
       {showProveModal && (
-        <>
-          {console.log('rendering AnonAadhaarProve modal with props:', { showProveModal, useTestAadhaar, hasDeeplinkParams: !!deeplinkParams })}
-          <AnonAadhaarProve
+        <AnonAadhaarProve
           buttonMessage={isContentBlocked ? "Content Blocked - Verify Age with Aadhaar" : "Verify Age with Aadhaar"}
           nullifierSeed={1234}
           fieldsToRevealArray={['revealAgeAbove18']}
-          signal={deeplinkParams?.challenge || "0xa527e0029e720D5f31c8798DF7b107Fad54f40E6"}
-          useTestAadhaar={useTestAadhaar}
+          signal="0xa527e0029e720D5f31c8798DF7b107Fad54f40E6"
+          useTestAadhaar={false}
           setProofs={(proofData: any) => {
-            console.log('BrowserScreen - Proof generation completed!', JSON.stringify({
-              hasDeeplink: !!deeplinkParams?.returnUrl,
-              wasContentBlocked: isContentBlocked,
-              proofData: proofData,
-              proofType: typeof proofData,
-              proofKeys: proofData ? Object.keys(proofData) : 'no proof data',
-              fullProofData: proofData,
-            }, null, 2));
-            
-            // check if proof was stored in context/local storage
-            setTimeout(() => {
-              console.log('BrowserScreen - Checking updated state after proof generation:', JSON.stringify({
-                newStatus: anonAadhaarStatus?.status,
-                newProof: anonAadhaarProof,
-                hasNewProof: !!anonAadhaarProof,
-              }, null, 2));
-            }, 100);
-            
             setShowProveModal(false);
             setIsContentBlocked(false);
             
-            // if this was triggered by deeplink, return to website
+            // if this was triggered by deeplink, return to the original website with verification params
             if (deeplinkParams?.returnUrl) {
-              const proofHash = 'verified';
-              console.log('BrowserScreen - Returning to website with proof:', deeplinkParams.returnUrl);
+              // extract proof hash from the proof data
+              let proofHash = '';
+              try {
+                if (proofData && typeof proofData === 'object') {
+                  // try to get a hash from the proof data - could be nullifier, signalHash, or pubkeyHash
+                  proofHash = proofData.nullifier || proofData.signalHash || proofData.pubkeyHash || JSON.stringify(proofData).substring(0, 64);
+                } else {
+                  proofHash = Date.now().toString();
+                }
+              } catch (error) {
+                proofHash = Date.now().toString();
+              }
+              
+              // return to the demo site with verification parameters
               DeeplinkService.returnToWebsite(deeplinkParams.returnUrl, true, proofHash);
+              
               setDeeplinkParams(null);
             } else {
-              console.log('BrowserScreen - Manual verification completed - staying in app');
               handleVerificationComplete();
             }
           }}
         />
-        </>
       )}
     </SafeAreaView>
   );
@@ -281,5 +258,44 @@ const styles = StyleSheet.create({
   loadingPlaceholder: {
     flex: 1,
     backgroundColor: '#f5f5f5',
+  },
+  contentBlockedOverlay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 1000,
+  },
+  contentBlockedContainer: {
+    backgroundColor: '#FFFFFF',
+    margin: 20,
+    padding: 24,
+    borderRadius: 12,
+    alignItems: 'center',
+    maxWidth: '90%',
+  },
+  contentBlockedTitle: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#DC2626',
+    marginBottom: 16,
+    textAlign: 'center',
+  },
+  contentBlockedMessage: {
+    fontSize: 16,
+    color: '#374151',
+    textAlign: 'center',
+    lineHeight: 24,
+    marginBottom: 12,
+  },
+  contentBlockedSubtext: {
+    fontSize: 14,
+    color: '#6B7280',
+    textAlign: 'center',
+    fontStyle: 'italic',
   },
 });

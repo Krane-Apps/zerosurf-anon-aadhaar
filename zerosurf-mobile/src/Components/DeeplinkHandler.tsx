@@ -7,8 +7,6 @@ export const DeeplinkHandler: React.FC = () => {
 
   useEffect(() => {
     const removeListener = DeeplinkService.addListener((params) => {
-      console.log('DeeplinkHandler received params, navigating to Browser:', params);
-      
       // if we receive a verification request, navigate to browser with params
       if (params.returnUrl || params.challenge) {
         (navigation as any).navigate('Browser', { deeplinkParams: params });
