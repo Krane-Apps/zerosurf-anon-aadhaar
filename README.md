@@ -1,7 +1,7 @@
 # ZeroSurf - Built on top of Anon Aadhaar
 
-<video width="100%" autoplay muted loop>
-  <source src="context/sc.mp4" type="video/mp4">
+<video width="100%" controls>
+  <source src="https://github.com/user-attachments/assets/303ea1ae-9dcc-422a-86f7-cc552f211f49" type="video/mp4">
   Your browser does not support the video tag.
 </video>
 
