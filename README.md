@@ -1,18 +1,9 @@
 # ZeroSurf - Built on top of Anon Aadhaar
-
-<video width="100%" controls>
-  <source src="https://github.com/user-attachments/assets/303ea1ae-9dcc-422a-86f7-cc552f211f49" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
 <img src="https://img.shields.io/badge/Zero_Knowledge-Privacy_First-4ade80?style=for-the-badge&logo=shield" alt="Zero Knowledge">
-<img src="https://img.shields.io/badge/Mobile-React_Native-61dafb?style=for-the-badge&logo=react" alt="React Native">
-<img src="https://img.shields.io/badge/Backend-Express_JS-000000?style=for-the-badge&logo=express" alt="Express">
-<img src="https://img.shields.io/badge/Deploy-Fluence-8b5cf6?style=for-the-badge" alt="Fluence">
 
 **Privacy-first mobile browser with zero-knowledge age verification**
 
-*No personal data • Cryptographic proofs • Decentralized backend*
+https://github.com/user-attachments/assets/303ea1ae-9dcc-422a-86f7-cc552f211f49
 
 ## The Problem
 
