@@ -1,0 +1,19 @@
+# source files
+src/
+tsconfig.json
+
+# development files
+*.log
+node_modules/
+.DS_Store
+.env*
+
+# test files
+*.test.*
+__tests__/
+coverage/
+
+# development tools
+.eslintrc*
+.prettierrc*
+jest.config.*
