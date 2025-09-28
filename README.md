@@ -1,5 +1,10 @@
 # ZeroSurf - Built on top of Anon Aadhaar
 
+<video width="100%" autoplay muted loop>
+  <source src="context/sc.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 <img src="https://img.shields.io/badge/Zero_Knowledge-Privacy_First-4ade80?style=for-the-badge&logo=shield" alt="Zero Knowledge">
 <img src="https://img.shields.io/badge/Mobile-React_Native-61dafb?style=for-the-badge&logo=react" alt="React Native">
 <img src="https://img.shields.io/badge/Backend-Express_JS-000000?style=for-the-badge&logo=express" alt="Express">
